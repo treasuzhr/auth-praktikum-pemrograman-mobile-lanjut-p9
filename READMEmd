@@ -1,0 +1,52 @@
+# 🔐 Auth Praktikum — Pertemuan 9
+
+Aplikasi mobile authentication & authorization menggunakan React Native (Expo) + Firebase Auth.
+
+## 👤 Identitas
+- **Nama:** [ISI NAMA KAMU]
+- **NIM:** [ISI NIM KAMU]
+- **Kelas:** D3 Sistem Informasi
+
+## 📱 Fitur Praktikum
+- ✅ Register dengan Email & Password
+- ✅ Email Verification
+- ✅ Login dengan Email & Password
+- ✅ Protected Routes (Auth Stack & App Stack)
+- ✅ Logout
+- ✅ Forgot Password / Reset Password
+- ✅ Biometric Login (Fingerprint / Face ID)
+
+## ⭐ Tugas Mandiri — Auto-logout Idle
+Fitur auto-logout otomatis mengeluarkan pengguna jika tidak ada aktivitas selama **5 menit**. 
+Implementasi menggunakan `AppState` dan `setTimeout` di React Native.
+
+### Cara Kerja:
+1. Setiap kali pengguna berpindah screen, timer di-reset
+2. Jika tidak ada aktivitas selama 5 menit, fungsi `logout` dipanggil otomatis
+3. Muncul notifikasi "Sesi berakhir karena tidak aktif selama 5 menit"
+4. Pengguna diarahkan kembali ke halaman Login
+
+## 🛠️ Teknologi yang Digunakan
+- React Native (Expo blank template)
+- Firebase Authentication
+- expo-secure-store
+- expo-local-authentication
+- AsyncStorage
+- React Navigation
+
+## 🚀 Cara Menjalankan
+```bash
+# Clone repository
+git clone [LINK REPO KAMU]
+cd auth-praktikum
+
+# Install dependencies
+npm install
+npx expo install firebase expo-secure-store expo-local-authentication @react-native-async-storage/async-storage react-native-screens react-native-safe-area-context expo-linear-gradient
+
+# Jalankan
+npx expo start
+```
+
+## 🎥 Video Demo
+[Link video demo]([https://youtu.be/nLBgAeFhCYQ?si=QTRTs8nqZJZPYoPt])
