@@ -3,9 +3,9 @@
 Aplikasi mobile authentication & authorization menggunakan React Native (Expo) + Firebase Auth.
 
 ## 👤 Identitas
-- **Nama:** [ISI NAMA KAMU]
-- **NIM:** [ISI NIM KAMU]
-- **Kelas:** D3 Sistem Informasi
+- **Nama:** Ukhti Zahra Isyana
+- **NIM:** 2410501130
+- **Kelas:** A
 
 ## 📱 Fitur Praktikum
 - ✅ Register dengan Email & Password
@@ -37,7 +37,7 @@ Implementasi menggunakan `AppState` dan `setTimeout` di React Native.
 ## 🚀 Cara Menjalankan
 ```bash
 # Clone repository
-git clone [LINK REPO KAMU]
+git clone [https://github.com/treasuzhr/auth-praktikum-pemrograman-mobile-lanjut-p9]
 cd auth-praktikum
 
 # Install dependencies
