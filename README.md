@@ -49,4 +49,4 @@ npx expo start
 ```
 
 ## 🎥 Video Demo
-[Link video demo]([https://youtu.be/nLBgAeFhCYQ?si=QTRTs8nqZJZPYoPt])
+[https://youtu.be/nLBgAeFhCYQ?si=QTRTs8nqZJZPYoPt]
