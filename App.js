@@ -31,7 +31,7 @@ function AppStack() {
 function Root() {
   const { user, loading, logout } = useAuth();
   const idleTimer = useRef(null);
-  const IDLE_TIMEOUT = 10 * 1000;
+  const IDLE_TIMEOUT = 5 * 60 * 1000;
 
   const resetTimer = () => {
     if (idleTimer.current) clearTimeout(idleTimer.current);
