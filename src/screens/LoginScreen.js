@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Alert, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View, TextInput, TouchableOpacity, Alert, Text,
+  StyleSheet, KeyboardAvoidingView, Platform, SafeAreaView, StatusBar
+} from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import * as LocalAuthentication from 'expo-local-authentication';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LinearGradient } from 'expo-linear-gradient';
 import { auth } from '../config/firebase';
 
 export default function LoginScreen({ navigation }) {
@@ -41,7 +43,7 @@ export default function LoginScreen({ navigation }) {
         if (savedEmail && savedPassword) {
           await signInWithEmailAndPassword(auth, savedEmail, savedPassword);
         } else {
-          Alert.alert('Gagal', 'Login dengan password dulu ya~');
+          Alert.alert('Gagal', 'Login dengan password dulu ya.');
         }
       } else {
         Alert.alert('Gagal', 'Biometric tidak cocok.');
@@ -52,50 +54,70 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <LinearGradient colors={['#f9a8d4', '#c084fc', '#818cf8']} style={styles.gradient}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-        <Text style={styles.emoji}>🌸</Text>
-        <Text style={styles.title}>Halo, Selamat Datang!</Text>
-        <Text style={styles.subtitle}>Masuk ke akunmu</Text>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inner}>
+        <Text style={styles.logo}>🏆</Text>
+        <Text style={styles.title}>WinChat</Text>
+        <Text style={styles.subtitle}>Info lomba & kompetisi</Text>
 
-        <View style={styles.card}>
-          <TextInput style={styles.input} placeholder="📧 Email" value={email}
-            onChangeText={setEmail} autoCapitalize="none" placeholderTextColor="#aaa" />
-          <TextInput style={styles.input} placeholder="🔒 Password" value={password}
-            onChangeText={setPassword} secureTextEntry placeholderTextColor="#aaa" />
+        <View style={styles.form}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput style={styles.input} placeholder="email@example.com"
+            value={email} onChangeText={setEmail} autoCapitalize="none"
+            placeholderTextColor="#bbb" keyboardType="email-address" />
+
+          <Text style={styles.label}>Password</Text>
+          <TextInput style={styles.input} placeholder="••••••••"
+            value={password} onChangeText={setPassword} secureTextEntry
+            placeholderTextColor="#bbb" />
 
           <TouchableOpacity style={styles.btnPrimary} onPress={handleLogin}>
-            <Text style={styles.btnText}>Login</Text>
+            <Text style={styles.btnPrimaryText}>Masuk</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.btnSecondary} onPress={handleBiometric}>
-            <Text style={styles.btnTextSecondary}>Login dengan Biometric</Text>
+            <Text style={styles.btnSecondaryText}>🔑  Login dengan Biometric</Text>
           </TouchableOpacity>
+
+          <View style={styles.divider} />
 
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={styles.link}>Belum punya akun? Daftar di sini</Text>
+            <Text style={styles.link}>Belum punya akun? <Text style={styles.linkBold}>Daftar</Text></Text>
           </TouchableOpacity>
-
           <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
             <Text style={styles.link}>Lupa password?</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  gradient: { flex: 1 },
-  container: { flex: 1, justifyContent: 'center', padding: 24 },
-  emoji: { fontSize: 48, textAlign: 'center', marginBottom: 8 },
-  title: { fontSize: 26, fontWeight: 'bold', color: '#fff', textAlign: 'center' },
-  subtitle: { fontSize: 14, color: '#ffe4f3', textAlign: 'center', marginBottom: 24 },
-  card: { backgroundColor: '#fff', borderRadius: 24, padding: 24, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 10, elevation: 5 },
-  input: { borderWidth: 1.5, borderColor: '#e9d5ff', padding: 12, marginBottom: 14, borderRadius: 14, fontSize: 14, color: '#333' },
-  btnPrimary: { backgroundColor: '#c084fc', padding: 14, borderRadius: 14, alignItems: 'center', marginBottom: 10 },
-  btnText: { color: '#fff', fontWeight: 'bold', fontSize: 15 },
-  btnSecondary: { backgroundColor: '#f3e8ff', padding: 14, borderRadius: 14, alignItems: 'center', marginBottom: 16 },
-  btnTextSecondary: { color: '#9333ea', fontWeight: 'bold', fontSize: 15 },
-  link: { color: '#a855f7', textAlign: 'center', marginTop: 6, fontSize: 13 },
+  container: { flex: 1, backgroundColor: '#fff' },
+  inner: { flex: 1, paddingHorizontal: 28, justifyContent: 'center' },
+  logo: { fontSize: 48, textAlign: 'center', marginBottom: 8 },
+  title: { fontSize: 28, fontWeight: '700', color: '#111', textAlign: 'center' },
+  subtitle: { fontSize: 13, color: '#999', textAlign: 'center', marginBottom: 40 },
+  form: {},
+  label: { fontSize: 13, fontWeight: '600', color: '#444', marginBottom: 6 },
+  input: {
+    borderWidth: 1, borderColor: '#e0e0e0', borderRadius: 10,
+    paddingHorizontal: 14, paddingVertical: 12, fontSize: 14,
+    color: '#111', marginBottom: 16,
+  },
+  btnPrimary: {
+    backgroundColor: '#111', borderRadius: 10,
+    paddingVertical: 14, alignItems: 'center', marginBottom: 10,
+  },
+  btnPrimaryText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  btnSecondary: {
+    borderWidth: 1, borderColor: '#e0e0e0', borderRadius: 10,
+    paddingVertical: 14, alignItems: 'center',
+  },
+  btnSecondaryText: { color: '#111', fontWeight: '600', fontSize: 14 },
+  divider: { height: 1, backgroundColor: '#f0f0f0', marginVertical: 20 },
+  link: { color: '#999', textAlign: 'center', fontSize: 13, marginBottom: 10 },
+  linkBold: { color: '#111', fontWeight: '700' },
 });

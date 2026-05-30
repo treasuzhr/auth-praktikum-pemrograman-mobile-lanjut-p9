@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Alert, Text, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View, TextInput, TouchableOpacity, Alert, Text,
+  StyleSheet, KeyboardAvoidingView, Platform, SafeAreaView, StatusBar
+} from 'react-native';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { LinearGradient } from 'expo-linear-gradient';
 import { auth } from '../config/firebase';
 
 export default function RegisterScreen({ navigation }) {
@@ -12,47 +14,65 @@ export default function RegisterScreen({ navigation }) {
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await sendEmailVerification(cred.user);
-      Alert.alert('Yeay! 🎉', 'Akun dibuat! Cek email untuk verifikasi ya~');
+      Alert.alert('Berhasil!', 'Akun dibuat. Cek email untuk verifikasi.');
     } catch (e) {
       Alert.alert('Gagal', e.message);
     }
   };
 
   return (
-    <LinearGradient colors={['#818cf8', '#c084fc', '#f9a8d4']} style={styles.gradient}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
-        <Text style={styles.emoji}>🧸</Text>
-        <Text style={styles.title}>Buat Akun Baru</Text>
-        <Text style={styles.subtitle}>Ayo daftar dulu~</Text>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.inner}>
+        <Text style={styles.logo}>✨</Text>
+        <Text style={styles.title}>Buat Akun</Text>
+        <Text style={styles.subtitle}>Bergabung dengan WinChat</Text>
 
-        <View style={styles.card}>
-          <TextInput style={styles.input} placeholder="📧 Email" value={email}
-            onChangeText={setEmail} autoCapitalize="none" placeholderTextColor="#aaa" />
-          <TextInput style={styles.input} placeholder="🔒 Password (min. 6 karakter)" value={password}
-            onChangeText={setPassword} secureTextEntry placeholderTextColor="#aaa" />
+        <View style={styles.form}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput style={styles.input} placeholder="email@example.com"
+            value={email} onChangeText={setEmail} autoCapitalize="none"
+            placeholderTextColor="#bbb" keyboardType="email-address" />
+
+          <Text style={styles.label}>Password</Text>
+          <TextInput style={styles.input} placeholder="Min. 6 karakter"
+            value={password} onChangeText={setPassword} secureTextEntry
+            placeholderTextColor="#bbb" />
 
           <TouchableOpacity style={styles.btnPrimary} onPress={handleRegister}>
-            <Text style={styles.btnText}>Daftar</Text>
+            <Text style={styles.btnPrimaryText}>Daftar</Text>
           </TouchableOpacity>
 
+          <View style={styles.divider} />
+
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style={styles.link}>Sudah punya akun? Login di sini</Text>
+            <Text style={styles.link}>Sudah punya akun? <Text style={styles.linkBold}>Masuk</Text></Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  gradient: { flex: 1 },
-  container: { flex: 1, justifyContent: 'center', padding: 24 },
-  emoji: { fontSize: 48, textAlign: 'center', marginBottom: 8 },
-  title: { fontSize: 26, fontWeight: 'bold', color: '#fff', textAlign: 'center' },
-  subtitle: { fontSize: 14, color: '#ffe4f3', textAlign: 'center', marginBottom: 24 },
-  card: { backgroundColor: '#fff', borderRadius: 24, padding: 24, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 10, elevation: 5 },
-  input: { borderWidth: 1.5, borderColor: '#e9d5ff', padding: 12, marginBottom: 14, borderRadius: 14, fontSize: 14, color: '#333' },
-  btnPrimary: { backgroundColor: '#818cf8', padding: 14, borderRadius: 14, alignItems: 'center', marginBottom: 16 },
-  btnText: { color: '#fff', fontWeight: 'bold', fontSize: 15 },
-  link: { color: '#6366f1', textAlign: 'center', fontSize: 13 },
+  container: { flex: 1, backgroundColor: '#fff' },
+  inner: { flex: 1, paddingHorizontal: 28, justifyContent: 'center' },
+  logo: { fontSize: 48, textAlign: 'center', marginBottom: 8 },
+  title: { fontSize: 28, fontWeight: '700', color: '#111', textAlign: 'center' },
+  subtitle: { fontSize: 13, color: '#999', textAlign: 'center', marginBottom: 40 },
+  form: {},
+  label: { fontSize: 13, fontWeight: '600', color: '#444', marginBottom: 6 },
+  input: {
+    borderWidth: 1, borderColor: '#e0e0e0', borderRadius: 10,
+    paddingHorizontal: 14, paddingVertical: 12, fontSize: 14,
+    color: '#111', marginBottom: 16,
+  },
+  btnPrimary: {
+    backgroundColor: '#111', borderRadius: 10,
+    paddingVertical: 14, alignItems: 'center',
+  },
+  btnPrimaryText: { color: '#fff', fontWeight: '700', fontSize: 15 },
+  divider: { height: 1, backgroundColor: '#f0f0f0', marginVertical: 20 },
+  link: { color: '#999', textAlign: 'center', fontSize: 13 },
+  linkBold: { color: '#111', fontWeight: '700' },
 });
